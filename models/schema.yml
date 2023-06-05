@@ -1,0 +1,84 @@
+version: 2
+sources:
+
+-   name: public
+    database: demo_transformation
+    schema: public
+    tables:
+    -   name: tbl_trn_cibil_accountseg
+    -   name: tbl_trn_cibil_addressseg
+    -   name: tbl_trn_cibil_enquiry
+    -   name: tbl_trn_cibil_nameseg
+    -   name: tbl_trn_cibil_emailseg
+
+
+models:
+  - name: filter_data
+    description: "Data of owner id which has value '1'"
+    columns:
+      - name: id_sr
+        description: ""
+        tests:
+           - not_null
+           - unique:
+               config:
+                  store_failures: true
+
+      - name: propno
+
+      - name: acctype
+        description: "Account Type"
+
+      - name: ownerind
+        description: "Owner ID"
+        tests:
+           - accepted_values:
+              values: ['1']
+
+  - name: transformed_data
+    description: ""
+    columns:
+      - name: blnc_flg
+        description: "balance flag"
+        tests:
+           - not_null
+           - accepted_values:
+              values: ['low' , 'medium' , 'high']
+
+      - name: current_balance
+        tests:
+           - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
+              max_value: 1000000
+
+
+  - name: aggregated_data
+    description: ""
+
+  - name: load_data
+    description: "The table from the Source that cotains the limited columns for the transformation"
+
+
+
+metrics:
+  - name: total_hni_id
+    label: Total ID
+    model: ref('transformed_data')
+    description: "The total unique ids which has balance more than 1000."
+
+    type: count_distinct
+    sql: id_sr
+
+    timestamp: opened_date
+    time_grains: [day, week, month, quarter, year, all_time]
+
+    dimensions:
+      - blnc_flg
+
+    filters:
+      - field: current_balance
+        operator: '>'
+        value: '1000'
+
+    meta: {team: sales}

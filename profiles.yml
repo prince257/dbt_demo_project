@@ -1,0 +1,23 @@
+demo_transformation:
+
+        outputs:
+          dev:
+            dbname: demo_transformation
+            host: postgres-db.ciqtpuhwjqrx.ap-south-1.rds.amazonaws.com
+            pass: lumiq123
+            port: 5432
+            schema: target
+            threads: 3
+            type: postgres
+            user: postgres
+          prod:
+            dbname: demo_transformation
+            host: postgres-db.ciqtpuhwjqrx.ap-south-1.rds.amazonaws.com
+            pass: lumiq123
+            port: 5432
+            schema: target
+            threads: 3
+            type: postgres
+            user: postgres
+        target: dev
+
