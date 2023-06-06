@@ -1,0 +1,1 @@
+select * from "demo_transformation"."public"."tbl_trn_cibil_accountseg"

@@ -1,0 +1,1 @@
+select id_sr , propno , acctype , ownerind from "demo_transformation"."target"."transformation_1_accountseg" where ownerind = '1'

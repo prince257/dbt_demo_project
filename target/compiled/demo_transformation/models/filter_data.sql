@@ -1,0 +1,1 @@
+select id_sr , propno , acctype , ownerind from "demo_transformation"."target"."load_data" where ownerind = '1'
